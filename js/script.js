@@ -1,14 +1,16 @@
-function displayDog(responseJson) {
+function displayDog(responseJson, breed) {
 
-    console.log(responseJson);
+    // console.log(responseJson);
     let src = responseJson.message;
     if(responseJson.status === "error"){
-        throw responseJson.message;
+        throw `${responseJson.message}`;
     }
 
     $('.search-result-section .wrapper').html(`
         <div class="dog-image-div">
-            <img src="${src}" alt="picture of a dog"
+            <img src="${src}" alt="picture of a dog">
+            <br>
+            ${breed}
         </div>
     `);
 
@@ -22,18 +24,19 @@ function fetchDogs(breed) {
         .then(response => response.json())
         .then(responseJson => {
             $('.search-result-section .wrapper').html("");
-            displayDog(responseJson);
+            displayDog(responseJson, breed);
             $('.footer-section').show();
         })
         .catch(err => {
-            console.log("Something went wrong: " + err.message);
+            console.log("Something went wrong: " + err);
             $('.search-result-section .wrapper').html(`
                 <div class="no-dogs-found">
-                    No dogs found
+                    ${err}
                 </div>
             `);
+            alert(`Error: ${err}`);
+            $('.dog-selector').val("").focus();
         });
-
 }
 
 function watchForm() {
@@ -45,7 +48,7 @@ function watchForm() {
         $('.footer-section').hide();
 
         let breed = $('.dog-selector').val();
-        console.log(breed);
+        
         $('.search-result-section .wrapper').html(`Searching ${breed}`);
         
         // removing the - and replaing with a '/'
@@ -53,7 +56,7 @@ function watchForm() {
 
         fetchDogs(breed);
 
-        $('#breed').val("");
+        $('.dog-selector').val("").focus();
 
     });
 

@@ -90,4 +90,6 @@ a{
 .dog-image-div{
     border: 2px double black;
     margin: 10px 0px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
 }
